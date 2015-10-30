@@ -17,8 +17,24 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
     this.x += dt*this.speed;
-    // TODO: If x, greater than width of screen, reset x to -xUnitLength
+
+    // Check collision, passing in standardized coordinates
+    checkCollision(this.x+10, this.y+20);
+    //  If x greater than width of screen, reset x to -xUnitLength
+    if(this.x > canvasWidth){
+        this.x = -xUnitLength;
+    }
+};
+
+var checkCollision = function(x, y){
+    // Get standardized player coordinates
+    var playerX = player.x;
+    var playerY = player.y+10;
+    if((((x+45).toFixed(0) >= playerX) && ((x-xUnitLength+30).toFixed(0) < playerX)) && y.toFixed(0) == playerY){
+        endGame();
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -33,7 +49,7 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = xUnitLength*2;
-    this.y = yUnitLength*5-20;
+    this.y = yUnitLength*5-10;
     this.speed = 400;
 };
 
@@ -47,12 +63,50 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(action) {
+    // Only take the action if it is valid
+    if(valid(action, this.x, this.y)) {
+        if (action == 'left') {
+            this.x -= xUnitLength;
+        }
+        else if (action == 'right') {
+            this.x += xUnitLength;
+        }
+        else if (action == 'up') {
+            this.y -= yUnitLength;
+        }
+        else if (action == 'down') {
+            this.y += yUnitLength;
+        }
+    }
+};
 
+// Function validates whether such an action remains within game bounds
+var valid = function(action, x, y){
+    if(action == 'left' && (x - xUnitLength < 0)){
+        return false;
+    }
+    else if(action == 'right' && (x+xUnitLength>4*xUnitLength)){
+        return false;
+    }
+    else if(action == 'up' && (y-yUnitLength < -yUnitLength)){
+        return false;
+    }
+    else if(action == 'down' && (y+yUnitLength > yUnitLength*5)){
+        return false;
+    }
+    return true;
+};
+
+var endGame = function(){
+    console.log("Detected collision");
+    player.x = xUnitLength*2;
+    player.y = yUnitLength*5-10;
 };
 
 
 var yUnitLength = 83;
 var xUnitLength = 101;
+var canvasWidth = 505;
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -65,6 +119,7 @@ var enemy4 = new Enemy(-xUnitLength*4, 1*yUnitLength-20, 120);
 var enemy5 = new Enemy(-xUnitLength*6, 3*yUnitLength-20, 180);
 
 var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
+//var allEnemies = [enemy2];
 
 
 
