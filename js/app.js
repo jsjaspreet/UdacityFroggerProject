@@ -33,7 +33,7 @@ var checkCollision = function(x, y){
     var playerX = player.x;
     var playerY = player.y+10;
     if((((x+45).toFixed(0) >= playerX) && ((x-xUnitLength+30).toFixed(0) < playerX)) && y.toFixed(0) == playerY){
-        endGame();
+        registerCollision();
     }
 };
 
@@ -50,11 +50,15 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = xUnitLength*2;
     this.y = yUnitLength*5-10;
+    this.score = 0;
     this.speed = 400;
 };
 
+// Only update step is to ensure they're not in water
 Player.prototype.update = function(dt) {
-
+    if((this.y+10).toFixed(0) == 0){
+        registerCollision();
+    }
 };
 
 Player.prototype.render = function() {
@@ -97,10 +101,11 @@ var valid = function(action, x, y){
     return true;
 };
 
-var endGame = function(){
+var registerCollision = function(){
     console.log("Detected collision");
     player.x = xUnitLength*2;
     player.y = yUnitLength*5-10;
+    player.score -= 50;
 };
 
 
@@ -112,14 +117,14 @@ var canvasWidth = 505;
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var player = new Player();
-var enemy1 = new Enemy(-xUnitLength, 2*yUnitLength-20, 50);
+//var enemy1 = new Enemy(-xUnitLength, 2*yUnitLength-20, 50);
 var enemy2 = new Enemy(-xUnitLength, 3*yUnitLength-20, 120);
-var enemy3 = new Enemy(-xUnitLength, 1*yUnitLength-20, 90);
-var enemy4 = new Enemy(-xUnitLength*4, 1*yUnitLength-20, 120);
-var enemy5 = new Enemy(-xUnitLength*6, 3*yUnitLength-20, 180);
+//var enemy3 = new Enemy(-xUnitLength, 1*yUnitLength-20, 90);
+//var enemy4 = new Enemy(-xUnitLength*4, 1*yUnitLength-20, 120);
+//var enemy5 = new Enemy(-xUnitLength*6, 3*yUnitLength-20, 180);
 
-var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
-//var allEnemies = [enemy2];
+//var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
+var allEnemies = [enemy2];
 
 
 

@@ -83,6 +83,17 @@ var Engine = (function(global) {
         // checkCollisions();
     }
 
+    /*
+     * This function updates the current running score of the player
+     */
+    function updateScore(){
+        console.log("updating score");
+        ctx.font = "normal small-caps bold 70px serif";
+        ctx.fillStyle = "gold";
+        ctx.fillText("Score: "+player.score, 10,110,440);
+        ctx.strokeText("Score: "+player.score, 10,110,440);
+    }
+
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -138,6 +149,7 @@ var Engine = (function(global) {
 
 
         renderEntities();
+        updateScore();
     }
 
     /* This function is called by the render function and is called on each game
