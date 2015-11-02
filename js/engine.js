@@ -13,7 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
+var gameOver = false;
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -92,6 +92,11 @@ var Engine = (function(global) {
         ctx.fillStyle = "gold";
         ctx.fillText("Score: "+player.score, 10,110,440);
         ctx.strokeText("Score: "+player.score, 10,110,440);
+        if(player.score <= 0){
+            document.removeEventListener('keyup', playFunction);
+            document.addEventListener('keyup', restartFunction);
+            gameOver = true;
+        }
     }
 
     /* This is called by the update function  and loops through all of the
@@ -150,6 +155,15 @@ var Engine = (function(global) {
 
         renderEntities();
         updateScore();
+        if(gameOver){
+               ctx.font = "normal small-caps bold 90px serif";
+                ctx.fillStyle = "red";
+        ctx.fillText("GAME OVER", 20,310,450);
+        ctx.strokeText("GAME OVER", 20,310,450);
+            ctx.font = "normal small-caps bold 40px serif";
+            ctx.fillText("Press enter to restart", 50, 370, 500);
+            ctx.strokeText("Press enter to restart", 50, 370, 500);
+        }
     }
 
     /* This function is called by the render function and is called on each game
@@ -172,7 +186,9 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        document.addEventListener('keyup', playFunction);
+        player.score = 200;
+        gameOver=false;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -193,4 +209,12 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+    var restartFunction = function(e) {
+        // if user presses enter (keyCode 13), reset game
+        if(e.keyCode == 13){
+         reset();
+        }
+    };
+
 })(this);

@@ -50,7 +50,7 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = xUnitLength*2;
     this.y = yUnitLength*5-10;
-    this.score = 0;
+    this.score = 200;
     this.speed = 400;
 };
 
@@ -128,10 +128,7 @@ var allEnemies = [enemy2];
 
 
 
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+var playFunction = function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -140,4 +137,10 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-});
+};
+
+
+
+// This listens for key presses and sends the keys to your
+// Player.handleInput() method. You don't need to modify this.
+document.addEventListener('keyup', playFunction);
