@@ -4,9 +4,11 @@ This Frogger Clone game is a project from Udacity's Front End Web Developer Nano
 
 ### How to open the game
 From the command line, execute the following command, replacing google-chrome with another comparable browser (chromium, firefox)
+
     ```
     $ google-chrome index.html
     ```
+    
 ### How to play the game
 - Objective of the game is to get all the gems on the field and achieve the highest score possible
 - Player spawns with 200 points! To incentivize you to get the gems faster, you lose points randomly every second until the game ends
