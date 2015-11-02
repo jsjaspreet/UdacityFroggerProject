@@ -5,6 +5,7 @@ var Gem = function (x, y, sprite) {
   this.y = y;
   this.active = true;
 };
+
 // If Gem is active and there is a collision, set gem to inactive and process the collision
 Gem.prototype.update = function (dt) {
   if (this.active && checkCollision(this.x, this.y + 20, 'gem')) {
@@ -65,15 +66,15 @@ Player.prototype.update = function (dt) {
     registerCollision('enemy');
   }
   // Player score should not go below 0
-  if (player.score < 0) {
-    player.score = 0;
+  if (this.score < 0) {
+    this.score = 0;
     this.active = false;
   }
   // Generate a random number
   var rand = Math.floor(Math.random() * 100);
   // Randomly decrement the score only if score is greater than 0
   if (rand % 49 == 0 && player.active) {
-    player.score -= 1;
+    this.score -= 1;
   }
 };
 Player.prototype.render = function () {

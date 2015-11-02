@@ -2,8 +2,9 @@
 
 This Frogger Clone game is a project from Udacity's Front End Web Developer Nanodegree curriculum.
 
-### How to open the game
-From the command line, execute the following command, replacing google-chrome with another comparable browser (chromium, firefox)
+### How to play the game
+Open index.html by clicking on it or from the command line, execute the following command, 
+replacing google-chrome with another comparable browser (chromium, firefox) installed on your machine
 
     $ google-chrome index.html
     
