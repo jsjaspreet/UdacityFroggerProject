@@ -14,7 +14,7 @@
  * a little simpler to work with.
  */
 var gameOver = false;
-var Engine = (function(global) {
+var Engine = (function (global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -85,14 +85,14 @@ var Engine = (function(global) {
     /*
      * This function updates the current running score of the player
      */
-    function updateScore(){
+    function updateScore() {
         ctx.font = "normal small-caps bold 70px serif";
         ctx.fillStyle = "gold";
-        ctx.fillText("Score: "+player.score, 10,110,440);
-        ctx.strokeText("Score: "+player.score, 10,110,440);
+        ctx.fillText("Score: " + player.score, 10, 110, 440);
+        ctx.strokeText("Score: " + player.score, 10, 110, 440);
 
         // If player's score has completely depleted, end game
-        if(player.score <= 0){
+        if (player.score <= 0) {
             document.removeEventListener('keyup', playFunction);
             document.addEventListener('keyup', restartFunction);
             gameOver = true;
@@ -109,27 +109,27 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         // Check to see if any gems are still active
         var anyGemActive = false;
-        gemList.forEach(function(gem){
-            if(gem.active){
+        gemList.forEach(function (gem) {
+            if (gem.active) {
                 anyGemActive = true;
             }
         });
 
         // If all gems have been retrieved, end game
-        if(!anyGemActive){
-            player.x = xUnitLength*2;
-            player.y = yUnitLength*5-10;
+        if (!anyGemActive) {
+            player.x = xUnitLength * 2;
+            player.y = yUnitLength * 5 - 10;
             player.active = false;
             document.removeEventListener('keyup', playFunction);
             document.addEventListener('keyup', restartFunction);
             gameOver = true;
         }
 
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
 
-        gemList.forEach(function(gem) {
+        gemList.forEach(function (gem) {
             gem.update(dt);
         });
 
@@ -180,21 +180,21 @@ var Engine = (function(global) {
         updateScore();
 
         // If the game is over and player ended with a negative score, should show sad red text
-        if(gameOver && player.score <= 0){
-               ctx.font = "normal small-caps bold 90px serif";
-                ctx.fillStyle = "red";
-             ctx.fillText("GAME OVER", 20,310,450);
-            ctx.strokeText("GAME OVER", 20,310,450);
+        if (gameOver && player.score <= 0) {
+            ctx.font = "normal small-caps bold 90px serif";
+            ctx.fillStyle = "red";
+            ctx.fillText("GAME OVER", 20, 310, 450);
+            ctx.strokeText("GAME OVER", 20, 310, 450);
             ctx.font = "normal small-caps bold 40px serif";
             ctx.fillText("Press enter to restart", 50, 370, 500);
             ctx.strokeText("Press enter to restart", 50, 370, 500);
         }
         // Otherwise if game is over and player ended positively, display positive message
-        else if(gameOver && player.score > 0){
+        else if (gameOver && player.score > 0) {
             ctx.font = "normal small-caps bold 90px serif";
             ctx.fillStyle = "blue";
-            ctx.fillText("You Win!", 20,310,450);
-            ctx.strokeText("You Win!", 20,310,450);
+            ctx.fillText("You Win!", 20, 310, 450);
+            ctx.strokeText("You Win!", 20, 310, 450);
             ctx.font = "normal small-caps bold 40px serif";
             ctx.fillText("Press enter to restart", 50, 370, 500);
             ctx.strokeText("Press enter to restart", 50, 370, 500);
@@ -209,12 +209,12 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        gemList.forEach(function(gem) {
-            if(gem.active) {
+        gemList.forEach(function (gem) {
+            if (gem.active) {
                 gem.render();
             }
         });
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.render();
         });
 
@@ -233,22 +233,23 @@ var Engine = (function(global) {
         player.score = 200;
         // Instantiate new gems and move pointers to these new objects
         // hopefully the garbage collector will handle the old ones
-        gem1 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
-            (Math.floor(Math.random()*3+1))*yUnitLength-20,
-            gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem2 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
-            (Math.floor(Math.random()*3+1))*yUnitLength-20,
-            gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem3 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
-            (Math.floor(Math.random()*3+1))*yUnitLength-20,
-            gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem4 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
-            (Math.floor(Math.random()*3+1))*yUnitLength-20,
-            gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem5 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
-            (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem1 = new Gem(xUnitLength * (Math.floor(Math.random() * 5)),
+            (Math.floor(Math.random() * 3 + 1)) * yUnitLength - 20,
+            gemImages[Math.floor(Math.random() * gemImages.length)]);
+        gem2 = new Gem(xUnitLength * (Math.floor(Math.random() * 5)),
+            (Math.floor(Math.random() * 3 + 1)) * yUnitLength - 20,
+            gemImages[Math.floor(Math.random() * gemImages.length)]);
+        gem3 = new Gem(xUnitLength * (Math.floor(Math.random() * 5)),
+            (Math.floor(Math.random() * 3 + 1)) * yUnitLength - 20,
+            gemImages[Math.floor(Math.random() * gemImages.length)]);
+        gem4 = new Gem(xUnitLength * (Math.floor(Math.random() * 5)),
+            (Math.floor(Math.random() * 3 + 1)) * yUnitLength - 20,
+            gemImages[Math.floor(Math.random() * gemImages.length)]);
+        gem5 = new Gem(xUnitLength * (Math.floor(Math.random() * 5)),
+            (Math.floor(Math.random() * 3 + 1)) * yUnitLength - 20,
+            gemImages[Math.floor(Math.random() * gemImages.length)]);
         gemList = [gem1, gem2, gem3, gem4, gem5];
-        gameOver=false;
+        gameOver = false;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -273,10 +274,10 @@ var Engine = (function(global) {
      */
     global.ctx = ctx;
 
-    var restartFunction = function(e) {
+    var restartFunction = function (e) {
         // if user presses enter (keyCode 13), reset game
-        if(e.keyCode == 13){
-         reset();
+        if (e.keyCode == 13) {
+            reset();
         }
     };
 
