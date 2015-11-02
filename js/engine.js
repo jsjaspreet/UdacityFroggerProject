@@ -80,7 +80,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /*
@@ -91,6 +90,8 @@ var Engine = (function(global) {
         ctx.fillStyle = "gold";
         ctx.fillText("Score: "+player.score, 10,110,440);
         ctx.strokeText("Score: "+player.score, 10,110,440);
+
+        // If player's score has completely depleted, end game
         if(player.score <= 0){
             document.removeEventListener('keyup', playFunction);
             document.addEventListener('keyup', restartFunction);
@@ -106,7 +107,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        // If all gems have been found, end game and display congrats
+        // Check to see if any gems are still active
         var anyGemActive = false;
         gemList.forEach(function(gem){
             if(gem.active){
@@ -114,6 +115,7 @@ var Engine = (function(global) {
             }
         });
 
+        // If all gems have been retrieved, end game
         if(!anyGemActive){
             player.x = xUnitLength*2;
             player.y = yUnitLength*5-10;
@@ -122,12 +124,15 @@ var Engine = (function(global) {
             document.addEventListener('keyup', restartFunction);
             gameOver = true;
         }
+
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+
         gemList.forEach(function(gem) {
             gem.update(dt);
         });
+
         player.update();
     }
 
@@ -173,6 +178,8 @@ var Engine = (function(global) {
 
         renderEntities();
         updateScore();
+
+        // If the game is over and player ended with a negative score, should show sad red text
         if(gameOver && player.score <= 0){
                ctx.font = "normal small-caps bold 90px serif";
                 ctx.fillStyle = "red";
@@ -182,6 +189,7 @@ var Engine = (function(global) {
             ctx.fillText("Press enter to restart", 50, 370, 500);
             ctx.strokeText("Press enter to restart", 50, 370, 500);
         }
+        // Otherwise if game is over and player ended positively, display positive message
         else if(gameOver && player.score > 0){
             ctx.font = "normal small-caps bold 90px serif";
             ctx.fillStyle = "blue";
@@ -219,13 +227,26 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
+        // Add back the functionality to move character
         document.addEventListener('keyup', playFunction);
+        // Reset Score
         player.score = 200;
-        gem1 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem2 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem3 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem4 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
-        gem5 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        // Instantiate new gems and move pointers to these new objects
+        // hopefully the garbage collector will handle the old ones
+        gem1 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
+            (Math.floor(Math.random()*3+1))*yUnitLength-20,
+            gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem2 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
+            (Math.floor(Math.random()*3+1))*yUnitLength-20,
+            gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem3 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
+            (Math.floor(Math.random()*3+1))*yUnitLength-20,
+            gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem4 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
+            (Math.floor(Math.random()*3+1))*yUnitLength-20,
+            gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem5 = new Gem(xUnitLength*(Math.floor(Math.random()*5)),
+            (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
         gemList = [gem1, gem2, gem3, gem4, gem5];
         gameOver=false;
     }
