@@ -87,7 +87,6 @@ var Engine = (function(global) {
      * This function updates the current running score of the player
      */
     function updateScore(){
-        console.log("updating score");
         ctx.font = "normal small-caps bold 70px serif";
         ctx.fillStyle = "gold";
         ctx.fillText("Score: "+player.score, 10,110,440);
@@ -107,6 +106,22 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+        // If all gems have been found, end game and display congrats
+        var anyGemActive = false;
+        gemList.forEach(function(gem){
+            if(gem.active){
+                anyGemActive = true;
+            }
+        });
+
+        if(!anyGemActive){
+            player.x = xUnitLength*2;
+            player.y = yUnitLength*5-10;
+            player.active = false;
+            document.removeEventListener('keyup', playFunction);
+            document.addEventListener('keyup', restartFunction);
+            gameOver = true;
+        }
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -158,11 +173,20 @@ var Engine = (function(global) {
 
         renderEntities();
         updateScore();
-        if(gameOver){
+        if(gameOver && player.score <= 0){
                ctx.font = "normal small-caps bold 90px serif";
                 ctx.fillStyle = "red";
-        ctx.fillText("GAME OVER", 20,310,450);
-        ctx.strokeText("GAME OVER", 20,310,450);
+             ctx.fillText("GAME OVER", 20,310,450);
+            ctx.strokeText("GAME OVER", 20,310,450);
+            ctx.font = "normal small-caps bold 40px serif";
+            ctx.fillText("Press enter to restart", 50, 370, 500);
+            ctx.strokeText("Press enter to restart", 50, 370, 500);
+        }
+        else if(gameOver && player.score > 0){
+            ctx.font = "normal small-caps bold 90px serif";
+            ctx.fillStyle = "blue";
+            ctx.fillText("You Win!", 20,310,450);
+            ctx.strokeText("You Win!", 20,310,450);
             ctx.font = "normal small-caps bold 40px serif";
             ctx.fillText("Press enter to restart", 50, 370, 500);
             ctx.strokeText("Press enter to restart", 50, 370, 500);
@@ -177,12 +201,13 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        gemList.forEach(function(gem) {
+            if(gem.active) {
+                gem.render();
+            }
+        });
         allEnemies.forEach(function(enemy) {
             enemy.render();
-        });
-
-        gemList.forEach(function(gem) {
-                gem.render();
         });
 
         player.render();
@@ -196,6 +221,12 @@ var Engine = (function(global) {
     function reset() {
         document.addEventListener('keyup', playFunction);
         player.score = 200;
+        gem1 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem2 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem3 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem4 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gem5 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+        gemList = [gem1, gem2, gem3, gem4, gem5];
         gameOver=false;
     }
 

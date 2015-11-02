@@ -1,14 +1,13 @@
-var Gem = function(x, y, sprite, id){
+var Gem = function(x, y, sprite){
     this.sprite = sprite;
     this.x = x;
     this.y = y;
-    this.id = id;
+    this.active = true;
 };
 
 Gem.prototype.update = function(dt) {
-  if(checkCollision(this.x,this.y+20,"gem")){
-      console.log("SHOULD HAVE GOTTEN POINTS!");
-      gemList.splice(this.id, 1);
+  if(this.active && checkCollision(this.x,this.y+20,"gem")){
+      this.active = false;
   }
 };
 
@@ -73,8 +72,8 @@ var Player = function() {
     this.x = xUnitLength*2;
     this.y = yUnitLength*5-10;
     this.score = 200;
-    this.finalScore = 200;
     this.speed = 400;
+    this.active = true;
 };
 
 // Check to ensure no water collision and decrement score randomly to incentivize player to get gems faster
@@ -83,7 +82,15 @@ Player.prototype.update = function(dt) {
         registerCollision("enemy");
     }
     var rand = Math.floor(Math.random() * 100);
-    if(rand % 49 == 0){
+
+    // Player score should not go below 0
+    if(player.score < 0){
+        player.score = 0;
+        this.active = false;
+    }
+
+    // Randomly decrement the score only if score is greater than 0
+    if(rand % 49 == 0 && player.active){
         player.score -= 1;
     }
 
@@ -130,14 +137,13 @@ var valid = function(action, x, y){
 };
 
 var registerCollision = function(type){
-    console.log("Detected collision");
     if(type == "enemy"){
         player.score -= 50;
         player.x = xUnitLength*2;
         player.y = yUnitLength*5-10;
     }
     else if(type == "gem"){
-        player.score += 20;
+        player.score += Math.floor(Math.random()*100+20);
     }
 };
 
@@ -150,20 +156,23 @@ var canvasWidth = 505;
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var player = new Player();
-//var enemy1 = new Enemy(-xUnitLength, 2*yUnitLength-20, 50);
+var enemy1 = new Enemy(-xUnitLength, 2*yUnitLength-20, 50);
 var enemy2 = new Enemy(-xUnitLength, 3*yUnitLength-20, 120);
-//var enemy3 = new Enemy(-xUnitLength, 1*yUnitLength-20, 90);
-//var enemy4 = new Enemy(-xUnitLength*4, 1*yUnitLength-20, 120);
-//var enemy5 = new Enemy(-xUnitLength*6, 3*yUnitLength-20, 180);
+var enemy3 = new Enemy(-xUnitLength, 1*yUnitLength-20, 90);
+var enemy4 = new Enemy(-xUnitLength*4, 1*yUnitLength-20, 120);
+var enemy5 = new Enemy(-xUnitLength*6, 3*yUnitLength-20, 180);
 
-//var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
-var allEnemies = [enemy2];
+var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
 
 
 var gemImages = ['images/Gem-Blue.png', 'images/Gem-Green.png', 'images/Gem-Orange.png'];
-var gem1 = new Gem(xUnitLength, 3*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)], 0);
+var gem1 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+var gem2 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+var gem3 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+var gem4 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
+var gem5 = new Gem(xUnitLength*(Math.floor(Math.random()*5)), (Math.floor(Math.random()*3+1))*yUnitLength-20, gemImages[Math.floor(Math.random()*gemImages.length)]);
 
-var gemList = [gem1];
+var gemList = [gem1, gem2, gem3, gem4, gem5];
 
 
 
